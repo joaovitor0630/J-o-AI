@@ -1,34 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuraVision — AI Image Generator</title>
-    <meta name="description" content="Generate stunning AI images from text prompts using state-of-the-art diffusion models. Powered by Hugging Face.">
+    <title>NeuraVision — Gerador de Imagens com IA</title>
+    <meta name="description" content="Gere imagens incríveis com IA a partir de prompts de texto usando modelos de difusão de última geração.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Animated background particles -->
     <div class="bg-particles" id="bgParticles"></div>
 
     <!-- Header -->
-    <header class="header" id="header">
+    <header class="header">
         <div class="header-inner">
             <div class="logo">
                 <div class="logo-icon">
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <defs>
-                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#a855f7"/>
-                                <stop offset="100%" style="stop-color:#06b6d4"/>
-                            </linearGradient>
-                        </defs>
+                        <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#a855f7"/><stop offset="100%" style="stop-color:#06b6d4"/></linearGradient></defs>
                         <path d="M16 2L28 9V23L16 30L4 23V9L16 2Z" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
                         <circle cx="16" cy="16" r="5" fill="url(#logoGrad)" opacity="0.8"/>
-                        <path d="M16 6L22 9.5V16.5L16 20L10 16.5V9.5L16 6Z" stroke="url(#logoGrad)" stroke-width="1.5" fill="none" opacity="0.5"/>
                     </svg>
                 </div>
                 <span class="logo-text">NeuraVision</span>
@@ -36,218 +29,307 @@
             <nav class="header-nav">
                 <button class="nav-btn active" data-tab="create" id="navCreate">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                    Create
+                    Criar
                 </button>
                 <button class="nav-btn" data-tab="gallery" id="navGallery">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                    Gallery
+                    Galeria
                 </button>
                 <button class="nav-btn" id="navSettings" onclick="openSettings()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-                    Settings
+                    Config
                 </button>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Create Tab -->
+        <!-- === CRIAR === -->
         <section class="tab-content active" id="createTab">
             <div class="hero-section">
                 <h1 class="hero-title">
-                    <span class="gradient-text">Imagine.</span> 
-                    <span class="gradient-text-alt">Create.</span> 
+                    <span class="gradient-text">Imagine.</span>
+                    <span class="gradient-text-alt">Crie.</span>
                     <span class="gradient-text-cyan">Inspire.</span>
                 </h1>
-                <p class="hero-subtitle">Transform your ideas into stunning visuals with cutting-edge AI diffusion models</p>
+                <p class="hero-subtitle">Transforme suas ideias em imagens impressionantes com modelos de IA de última geração</p>
             </div>
 
             <div class="generator-container">
-                <!-- Prompt Section -->
+                <!-- Presets de Estilo -->
+                <div class="style-presets glass-card">
+                    <div class="presets-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        Estilos Rápidos
+                    </div>
+                    <div class="presets-grid" id="stylePresets">
+                        <button class="preset-chip" data-style=", photorealistic, 8k uhd, DSLR photograph, ultra detailed, natural lighting, depth of field, shot on Canon EOS R5">📷 Fotorrealista</button>
+                        <button class="preset-chip" data-style=", anime style, vibrant colors, studio ghibli inspired, cel shading, beautiful detailed eyes, trending on pixiv">🎌 Anime</button>
+                        <button class="preset-chip" data-style=", oil painting on canvas, classical art, museum quality, rich textures, visible brushstrokes, chiaroscuro lighting">🎨 Pintura a Óleo</button>
+                        <button class="preset-chip" data-style=", cyberpunk aesthetic, neon lights, futuristic cityscape, volumetric fog, rain reflections, blade runner style">🌆 Cyberpunk</button>
+                        <button class="preset-chip" data-style=", delicate watercolor painting, soft washes, paper texture, artistic, dreamy atmosphere, pastel palette">💧 Aquarela</button>
+                        <button class="preset-chip" data-style=", cinematic still, dramatic lighting, anamorphic lens flare, movie scene, color grading, shallow depth of field">🎬 Cinemático</button>
+                        <button class="preset-chip" data-style=", pixel art, retro 16-bit game sprite, nostalgic, limited color palette, crisp pixels">👾 Pixel Art</button>
+                        <button class="preset-chip" data-style=", 3d render, octane render, subsurface scattering, volumetric lighting, ray tracing, physically based rendering">🧊 3D Render</button>
+                        <button class="preset-chip" data-style=", fantasy art, magical atmosphere, ethereal glow, epic composition, detailed illustration, concept art">🧙 Fantasia</button>
+                        <button class="preset-chip" data-style=", minimalist design, clean composition, negative space, modern aesthetic, geometric, muted tones">✨ Minimalista</button>
+                    </div>
+                </div>
+
+                <!-- Prompt -->
                 <div class="prompt-card glass-card">
                     <div class="prompt-header">
                         <div class="prompt-label">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                            Your Prompt
+                            Seu Prompt
                         </div>
-                        <button class="inspire-btn" id="inspireBtn" onclick="fillRandomPrompt()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                            Inspire Me
-                        </button>
+                        <div class="prompt-actions">
+                            <button class="prompt-history-btn" id="historyBtn" onclick="toggleHistory()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                Histórico
+                            </button>
+                            <button class="inspire-btn" onclick="fillRandomPrompt()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                                Inspirar
+                            </button>
+                            <button class="enhance-btn" id="enhanceBtn" onclick="enhancePrompt()">
+                                ✨ Melhorar IA
+                            </button>
+                        </div>
                     </div>
-                    <textarea 
-                        id="promptInput" 
-                        class="prompt-textarea" 
-                        placeholder="Describe the image you want to create... Be specific about style, colors, mood, and details."
-                        rows="4"
-                    ></textarea>
+                    <!-- Histórico dropdown -->
+                    <div class="history-dropdown" id="historyDropdown">
+                        <div class="history-list" id="historyList"></div>
+                    </div>
+                    <textarea id="promptInput" class="prompt-textarea" placeholder="Descreva a imagem que deseja criar... Seja específico sobre estilo, cores, clima e detalhes." rows="4"></textarea>
                     <div class="prompt-footer">
-                        <div class="char-count"><span id="charCount">0</span> characters</div>
-                        <div class="prompt-tips">
-                            <span class="tip-badge">Tip: Add style keywords like "cinematic", "oil painting", "cyberpunk"</span>
-                        </div>
+                        <div class="char-count"><span id="charCount">0</span> caracteres</div>
+                        <span class="tip-badge">Dica: Clique nos estilos acima para adicionar palavras-chave ao prompt</span>
                     </div>
                 </div>
 
-                <!-- Negative Prompt -->
+                <!-- Prompt Negativo -->
                 <div class="negative-prompt-card glass-card">
                     <details class="negative-details">
                         <summary class="negative-summary">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
-                            Negative Prompt <span class="optional-badge">Optional</span>
+                            Prompt Negativo <span class="optional-badge">Opcional</span>
                         </summary>
-                        <textarea 
-                            id="negativePrompt" 
-                            class="negative-textarea" 
-                            placeholder="What you don't want to see (e.g., blurry, low quality, distorted...)"
-                            rows="2"
-                        ></textarea>
+                        <textarea id="negativePrompt" class="negative-textarea" placeholder="O que você NÃO quer ver (ex: borrado, baixa qualidade, distorcido...)" rows="2"></textarea>
                     </details>
                 </div>
 
-                <!-- Settings Row -->
-                <div class="settings-row">
+                <!-- Image-to-Image Upload -->
+                <div class="img2img-card glass-card">
+                    <details class="img2img-details">
+                        <summary class="img2img-summary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                            Imagem de Referência <span class="optional-badge">Opcional</span>
+                        </summary>
+                        <div class="img2img-content">
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="refImageInput" accept="image/*" hidden>
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <p>Clique ou arraste uma imagem aqui</p>
+                                <span>PNG, JPG até 5MB</span>
+                            </div>
+                            <div class="upload-preview" id="uploadPreview" style="display:none;">
+                                <img id="refPreviewImg" alt="Imagem de referência">
+                                <button class="remove-ref-btn" onclick="removeRefImage()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                </button>
+                            </div>
+                            <div class="strength-control" id="strengthControl" style="display:none;">
+                                <label class="setting-label">Força da transformação: <span id="strengthValue">0.7</span></label>
+                                <input type="range" id="strengthRange" class="setting-range" min="0.1" max="1" value="0.7" step="0.05">
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Configurações -->
+                <div class="settings-grid">
                     <div class="setting-card glass-card">
-                        <label class="setting-label" for="modelSelect">Model</label>
+                        <label class="setting-label">Modelo</label>
                         <select id="modelSelect" class="setting-select">
-                            <option value="black-forest-labs/FLUX.1-schnell">FLUX.1 Schnell (Rápido)</option>
-                            <option value="stabilityai/stable-diffusion-xl-base-1.0">SDXL 1.0 (Melhor Qualidade)</option>
-                            <option value="runwayml/stable-diffusion-v1-5">SD 1.5 (Clássico)</option>
-                            <option value="stabilityai/stable-diffusion-2-1">SD 2.1 (Equilibrado)</option>
-                            <option value="prompthero/openjourney-v4">OpenJourney v4 (Artístico)</option>
+                            <optgroup label="⚡ FLUX (Recomendado)">
+                                <option value="black-forest-labs/FLUX.1-schnell">FLUX.1 Schnell (Rápido)</option>
+                                <option value="black-forest-labs/FLUX.1-dev">FLUX.1 Dev (Alta Qualidade)</option>
+                            </optgroup>
+                            <optgroup label="🎨 Stable Diffusion">
+                                <option value="stabilityai/stable-diffusion-xl-base-1.0">SDXL 1.0 (Clássico)</option>
+                                <option value="stabilityai/stable-diffusion-3.5-large">SD 3.5 Large (Novo)</option>
+                                <option value="stabilityai/stable-diffusion-3-medium-diffusers">SD 3 Medium</option>
+                            </optgroup>
+                            <optgroup label="🖼️ Outros Modelos">
+                                <option value="playgroundai/playground-v2.5-1024px-aesthetic">Playground v2.5 (Estético)</option>
+                                <option value="ByteDance/SDXL-Lightning">SDXL Lightning (Ultra Rápido)</option>
+                                <option value="prompthero/openjourney-v4">OpenJourney v4 (Midjourney Style)</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="setting-card glass-card">
-                        <label class="setting-label" for="stepsRange">Steps: <span id="stepsValue">30</span></label>
-                        <input type="range" id="stepsRange" class="setting-range" min="10" max="50" value="30">
+                        <label class="setting-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Qualidade
+                        </label>
+                        <div class="quality-btns" id="qualityBtns">
+                            <button class="quality-btn" data-quality="normal" onclick="setQuality('normal')">⚡ Normal</button>
+                            <button class="quality-btn active" data-quality="high" onclick="setQuality('high')">✨ Alta</button>
+                            <button class="quality-btn quality-btn-max" data-quality="max" onclick="setQuality('max')">💎 Máxima</button>
+                        </div>
                     </div>
                     <div class="setting-card glass-card">
-                        <label class="setting-label" for="guidanceRange">Guidance: <span id="guidanceValue">7.5</span></label>
-                        <input type="range" id="guidanceRange" class="setting-range" min="1" max="20" value="7.5" step="0.5">
+                        <label class="setting-label">Proporção</label>
+                        <div class="aspect-btns" id="aspectBtns">
+                            <button class="aspect-btn active" data-w="1024" data-h="1024">1:1</button>
+                            <button class="aspect-btn" data-w="1024" data-h="680" >3:2</button>
+                            <button class="aspect-btn" data-w="680" data-h="1024">2:3</button>
+                            <button class="aspect-btn" data-w="1024" data-h="576">16:9</button>
+                            <button class="aspect-btn" data-w="576" data-h="1024">9:16</button>
+                        </div>
+                    </div>
+                    <div class="setting-card glass-card">
+                        <label class="setting-label">Quantidade: <span id="countValue">1</span></label>
+                        <input type="range" id="countRange" class="setting-range" min="1" max="4" value="1" step="1">
+                    </div>
+                    <div class="setting-card glass-card">
+                        <label class="setting-label">Steps: <span id="stepsValue">35</span></label>
+                        <input type="range" id="stepsRange" class="setting-range" min="10" max="50" value="35">
+                    </div>
+                    <div class="setting-card glass-card">
+                        <label class="setting-label">Guidance: <span id="guidanceValue">8.5</span></label>
+                        <input type="range" id="guidanceRange" class="setting-range" min="1" max="20" value="8.5" step="0.5">
+                    </div>
+                    <div class="setting-card glass-card">
+                        <label class="setting-label">Seed</label>
+                        <div class="seed-row">
+                            <input type="number" id="seedInput" class="seed-input" placeholder="Aleatório" min="-1">
+                            <button class="seed-random-btn" onclick="randomizeSeed()" title="Gerar seed aleatória">🎲</button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Generate Button -->
+                <!-- Botão Gerar -->
                 <button class="generate-btn" id="generateBtn" onclick="generateImage()">
-                    <div class="btn-content">
+                    <div class="btn-content" id="btnContent">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                        <span>Generate Image</span>
+                        <span>Gerar Imagem</span>
                     </div>
-                    <div class="btn-loading" style="display:none;">
+                    <div class="btn-loading" id="btnLoading" style="display:none;">
                         <div class="spinner"></div>
-                        <span>Creating your masterpiece...</span>
+                        <span id="loadingText">Criando sua obra-prima...</span>
                     </div>
                 </button>
 
-                <!-- Result Section -->
-                <div class="result-section" id="resultSection" style="display:none;">
-                    <div class="result-card glass-card">
-                        <div class="result-image-wrapper">
-                            <img id="resultImage" class="result-image" alt="Generated AI Image">
-                        </div>
-                        <div class="result-actions">
-                            <button class="action-btn primary" onclick="downloadImage()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                Download
-                            </button>
-                            <button class="action-btn" onclick="saveToGallery()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-                                Save to Gallery
-                            </button>
-                            <button class="action-btn" onclick="copyPromptFromResult()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                Copy Prompt
-                            </button>
-                        </div>
-                        <div class="result-meta">
-                            <span class="meta-item" id="resultModel"></span>
-                            <span class="meta-item" id="resultTime"></span>
-                        </div>
+                <!-- Barra de Progresso -->
+                <div class="progress-container" id="progressContainer" style="display:none;">
+                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                    <div class="progress-info">
+                        <span id="progressStatus">Gerando...</span>
+                        <span id="progressTime">0s</span>
                     </div>
                 </div>
 
-                <!-- Error Section -->
+                <!-- Resultados -->
+                <div class="result-section" id="resultSection" style="display:none;">
+                    <div class="results-grid" id="resultsGrid"></div>
+                    <div class="result-meta">
+                        <span class="meta-item" id="resultModel"></span>
+                        <span class="meta-item" id="resultTime"></span>
+                        <span class="meta-item" id="resultSeed"></span>
+                    </div>
+                </div>
+
+                <!-- Erro -->
                 <div class="error-section" id="errorSection" style="display:none;">
                     <div class="error-card glass-card">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         <p id="errorMessage"></p>
-                        <button class="retry-btn" onclick="generateImage()">Try Again</button>
+                        <button class="retry-btn" onclick="generateImage()">Tentar Novamente</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Gallery Tab -->
+        <!-- === GALERIA === -->
         <section class="tab-content" id="galleryTab">
             <div class="gallery-header">
-                <h2 class="section-title">Your Gallery</h2>
+                <h2 class="section-title">Sua Galeria</h2>
                 <div class="gallery-actions">
-                    <span class="gallery-count" id="galleryCount">0 images</span>
-                    <button class="clear-gallery-btn" onclick="clearGallery()" id="clearGalleryBtn">
+                    <span class="gallery-count" id="galleryCount">0 imagens</span>
+                    <button class="clear-gallery-btn" onclick="clearGallery()">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-                        Clear All
+                        Limpar Tudo
                     </button>
                 </div>
             </div>
             <div class="gallery-grid" id="galleryGrid">
                 <div class="gallery-empty" id="galleryEmpty">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <p>No images yet</p>
-                    <span>Generate some images and save them here!</span>
+                    <p>Nenhuma imagem ainda</p>
+                    <span>Gere imagens e salve aqui!</span>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Settings Modal -->
+    <!-- Modal Configurações -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal glass-card">
             <div class="modal-header">
-                <h3>Settings</h3>
+                <h3>Configurações</h3>
                 <button class="modal-close" onclick="closeSettings()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="setting-group">
-                    <label class="setting-label" for="apiKeyInput">
+                    <label class="setting-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                        Modo de Servidor
+                    </label>
+                    <div class="server-mode-btns">
+                        <button class="server-mode-btn active" data-mode="local" onclick="setServerMode('local')">Local (HuggingFace)</button>
+                        <button class="server-mode-btn" data-mode="colab" onclick="setServerMode('colab')">Google Colab</button>
+                    </div>
+                </div>
+                <div class="setting-group" id="apiKeyGroup">
+                    <label class="setting-label">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                        Hugging Face API Key
+                        Chave API do Hugging Face
                     </label>
                     <div class="api-key-input-wrapper">
                         <input type="password" id="apiKeyInput" class="api-key-input" placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
-                        <button class="toggle-visibility" onclick="toggleApiKeyVisibility()">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="eyeIcon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </button>
+                        <button class="toggle-visibility" onclick="toggleApiKeyVisibility()">👁</button>
                     </div>
-                    <p class="setting-hint">
-                        Get your free API key at <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener">huggingface.co/settings/tokens</a>
-                    </p>
+                    <p class="setting-hint">Obtenha sua chave gratuita em <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a></p>
+                </div>
+                <div class="setting-group" id="colabUrlGroup" style="display:none;">
+                    <label class="setting-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                        URL do Servidor (Colab)
+                    </label>
+                    <input type="text" id="colabUrlInput" class="api-key-input" placeholder="https://xxxxx.ngrok.io" style="width:100%;margin-top:6px;">
+                    <p class="setting-hint">Cole aqui a URL gerada pelo notebook do Colab</p>
+                    <button class="test-connection-btn" onclick="testColabConnection()">Testar Conexao</button>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="save-settings-btn" onclick="saveSettings()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    Save Settings
-                </button>
+                <button class="save-settings-btn" onclick="saveSettings()">Salvar Configurações</button>
             </div>
         </div>
     </div>
 
-    <!-- Lightbox Modal -->
+    <!-- Lightbox -->
     <div class="lightbox-overlay" id="lightboxModal">
-        <button class="lightbox-close" onclick="closeLightbox()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-        <img id="lightboxImage" class="lightbox-image" alt="Full size image">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <img id="lightboxImage" class="lightbox-image" alt="Imagem em tamanho real">
         <div class="lightbox-info" id="lightboxInfo"></div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span id="toastMessage"></span>
-    </div>
+    <!-- Toast -->
+    <div class="toast" id="toast"><span id="toastMessage"></span></div>
 
     <script src="app.js"></script>
 </body>
