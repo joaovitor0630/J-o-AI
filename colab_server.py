@@ -297,6 +297,7 @@ def enhance_prompt():
             temperature=0.7
         )
         
+        
         enhanced_prompt = response.choices[0].message.content.strip()
         return jsonify({"enhanced_prompt": enhanced_prompt})
 

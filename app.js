@@ -57,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Particles ──
 function createParticles() {
     const c = $('bgParticles');
-    const colors = ['#a855f7','#06b6d4','#ec4899','#8b5cf6','#22d3ee'];
+    const colors = ['#a855f7', '#06b6d4', '#ec4899', '#8b5cf6', '#22d3ee'];
     for (let i = 0; i < 15; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         const s = Math.random() * 180 + 60;
-        p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${colors[i%5]};animation-delay:${Math.random()*-20}s;animation-duration:${15+Math.random()*15}s;filter:blur(${40+Math.random()*40}px);`;
+        p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;background:${colors[i % 5]};animation-delay:${Math.random() * -20}s;animation-duration:${15 + Math.random() * 15}s;filter:blur(${40 + Math.random() * 40}px);`;
         c.appendChild(p);
     }
 }
@@ -173,7 +173,7 @@ function fillRandomPrompt() {
 async function enhancePrompt() {
     const prompt = promptInput.value.trim();
     if (!prompt) { showToast('Digite uma ideia inicial primeiro.'); promptInput.focus(); return; }
-    
+
     if (serverMode === 'local' && !apiKey) { showToast('Configure sua API key nas Config.'); openSettings(); return; }
     if (serverMode === 'colab' && !colabUrl) { showToast('Configure a URL do Colab nas Config.'); openSettings(); return; }
 
@@ -198,7 +198,7 @@ async function enhancePrompt() {
 
         if (!response.ok) {
             let errData = {};
-            try { errData = await response.json(); } catch(e) {}
+            try { errData = await response.json(); } catch (e) { }
             throw new Error(errData.error || `Erro da API (${response.status})`);
         }
 
@@ -207,7 +207,7 @@ async function enhancePrompt() {
             promptInput.value = data.enhanced_prompt;
             charCount.textContent = promptInput.value.length;
             showToast('✨ Prompt aprimorado com IA!');
-            
+
             promptInput.style.transition = 'box-shadow 0.3s, background-color 0.3s';
             promptInput.style.boxShadow = '0 0 15px rgba(250, 204, 21, 0.4)';
             promptInput.style.backgroundColor = 'rgba(250, 204, 21, 0.05)';
@@ -218,7 +218,7 @@ async function enhancePrompt() {
         } else {
             throw new Error("Resposta inválida do servidor.");
         }
-    } catch(err) {
+    } catch (err) {
         showToast('Erro ao melhorar prompt: ' + err.message);
     } finally {
         enhanceBtn.innerHTML = originalText;
@@ -340,7 +340,7 @@ async function generateImage() {
 
             if (!response.ok) {
                 let errData = {};
-                try { errData = await response.json(); } catch(e) {}
+                try { errData = await response.json(); } catch (e) { }
                 throw new Error(errData.error || `Erro da API (${response.status})`);
             }
 
@@ -348,7 +348,7 @@ async function generateImage() {
             if (blob.size < 200) {
                 const text = await blob.text();
                 try { const p = JSON.parse(text); throw new Error(p.error || 'Resposta inesperada.'); }
-                catch(e) { if (e instanceof SyntaxError) throw new Error('A API nao retornou uma imagem.'); throw e; }
+                catch (e) { if (e instanceof SyntaxError) throw new Error('A API nao retornou uma imagem.'); throw e; }
             }
 
             results.push({ blob, url: URL.createObjectURL(blob), seed: useSeed });
@@ -364,11 +364,11 @@ async function generateImage() {
         resultsGrid.className = `results-grid cols-${cols}`;
         resultsGrid.innerHTML = results.map((r, i) => `
             <div class="result-card">
-                <img src="${r.url}" alt="Imagem gerada ${i+1}" onclick="openLightboxUrl('${r.url}','${prompt.replace(/'/g,"\\'")}')" />
+                <img src="${r.url}" alt="Imagem gerada ${i + 1}" onclick="openLightboxUrl('${r.url}','${prompt.replace(/'/g, "\\'")}')" />
                 <div class="result-card-actions">
                     <button onclick="downloadBlob(${i})">Baixar</button>
                     <button onclick="saveOneToGallery(${i})">Salvar</button>
-                    <button onclick="copyText('${prompt.replace(/'/g,"\\'")}')">Copiar Prompt</button>
+                    <button onclick="copyText('${prompt.replace(/'/g, "\\'")}')">Copiar Prompt</button>
                 </div>
             </div>
         `).join('');
@@ -431,7 +431,7 @@ function renderGallery() {
         const div = document.createElement('div');
         div.className = 'gallery-item';
         div.innerHTML = `
-            <img src="${item.image}" alt="${item.prompt.substring(0,40)}" loading="lazy">
+            <img src="${item.image}" alt="${item.prompt.substring(0, 40)}" loading="lazy">
             <div class="gallery-item-overlay"><div class="gallery-item-prompt">${item.prompt}</div></div>
             <button class="gallery-item-delete" onclick="event.stopPropagation();deleteGalleryItem(${item.id})">✕</button>
         `;

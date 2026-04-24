@@ -32,6 +32,7 @@ class ProxyHandler(http.server.SimpleHTTPRequestHandler):
         try:
             from huggingface_hub import InferenceClient
             from PIL import Image
+            
 
             length = int(self.headers.get('Content-Length', 0))
             data = json.loads(self.rfile.read(length))
